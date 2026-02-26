@@ -462,141 +462,141 @@ import './App.css'
 
 
 
-function App() {
-  const [students, setStudents] = useState([
-    { id: 1, name: "Hamza", marks: 85 },
-    { id: 2, name: "Ali", marks: 40 }
-  ]);
+// function App() {
+//   const [students, setStudents] = useState([
+//     { id: 1, name: "Hamza", marks: 85 },
+//     { id: 2, name: "Ali", marks: 40 }
+//   ]);
 
-  const [filter, setFilter] = useState("all");
-  const [search, setSearch] = useState("");
-  const [formData, setFormData] = useState({ name: "", marks: "" });
-  const [editId, setEditId] = useState(null);
+//   const [filter, setFilter] = useState("all");
+//   const [search, setSearch] = useState("");
+//   const [formData, setFormData] = useState({ name: "", marks: "" });
+//   const [editId, setEditId] = useState(null);
 
-  const filteredStudents = students
-    .filter((student) => {
-      if (filter === "pass") return student.marks >= 50;
-      if (filter === "fail") return student.marks < 50;
-      return true;
-    })
-    .filter((student) =>
-      student.name.toLowerCase().includes(search.toLowerCase())
-    );
+//   const filteredStudents = students
+//     .filter((student) => {
+//       if (filter === "pass") return student.marks >= 50;
+//       if (filter === "fail") return student.marks < 50;
+//       return true;
+//     })
+//     .filter((student) =>
+//       student.name.toLowerCase().includes(search.toLowerCase())
+//     );
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  }
+//   function handleChange(e) {
+//     const { name, value } = e.target;
+//     setFormData({ ...formData, [name]: value });
+//   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+//   function handleSubmit(e) {
+//     e.preventDefault();
 
-    if (editId) {
-      setStudents(
-        students.map((student) =>
-          student.id === editId
-            ? { ...student, name: formData.name, marks: Number(formData.marks) }
-            : student
-        )
-      );
-      setEditId(null);
-    } else {
-      const newStudent = {
-        id: Date.now(),
-        name: formData.name,
-        marks: Number(formData.marks)
-      };
-      setStudents([...students, newStudent]);
-    }
+//     if (editId) {
+//       setStudents(
+//         students.map((student) =>
+//           student.id === editId
+//             ? { ...student, name: formData.name, marks: Number(formData.marks) }
+//             : student
+//         )
+//       );
+//       setEditId(null);
+//     } else {
+//       const newStudent = {
+//         id: Date.now(),
+//         name: formData.name,
+//         marks: Number(formData.marks)
+//       };
+//       setStudents([...students, newStudent]);
+//     }
 
-    setFormData({ name: "", marks: "" });
-  }
+//     setFormData({ name: "", marks: "" });
+//   }
 
-  function handleDelete(id) {
-    setStudents(students.filter((student) => student.id !== id));
-  }
+//   function handleDelete(id) {
+//     setStudents(students.filter((student) => student.id !== id));
+//   }
 
-  function handleEdit(student) {
-    setFormData({ name: student.name, marks: student.marks });
-    setEditId(student.id);
-  }
+//   function handleEdit(student) {
+//     setFormData({ name: student.name, marks: student.marks });
+//     setEditId(student.id);
+//   }
 
-  return (
-    <div className="container">
-      <h1>Student Management System</h1>
+//   return (
+//     <div className="container">
+//       <h1>Student Management System</h1>
 
-      <form onSubmit={handleSubmit} className="form">
-        <input
-          type="text"
-          name="name"
-          placeholder="Student Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="marks"
-          placeholder="Marks"
-          value={formData.marks}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">
-          {editId ? "Update Student" : "Add Student"}
-        </button>
-      </form>
+//       <form onSubmit={handleSubmit} className="form">
+//         <input
+//           type="text"
+//           name="name"
+//           placeholder="Student Name"
+//           value={formData.name}
+//           onChange={handleChange}
+//           required
+//         />
+//         <input
+//           type="number"
+//           name="marks"
+//           placeholder="Marks"
+//           value={formData.marks}
+//           onChange={handleChange}
+//           required
+//         />
+//         <button type="submit">
+//           {editId ? "Update Student" : "Add Student"}
+//         </button>
+//       </form>
 
-      <input
-        type="text"
-        placeholder="Search..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+//       <input
+//         type="text"
+//         placeholder="Search..."
+//         value={search}
+//         onChange={(e) => setSearch(e.target.value)}
+//       />
 
-      <div className="filters">
-        <button
-          className={filter === "all" ? "active" : ""}
-          onClick={() => setFilter("all")}
-        >
-          All
-        </button>
-        <button
-          className={filter === "pass" ? "active" : ""}
-          onClick={() => setFilter("pass")}
-        >
-          Pass
-        </button>
-        <button
-          className={filter === "fail" ? "active" : ""}
-          onClick={() => setFilter("fail")}
-        >
-          Fail
-        </button>
-      </div>
+//       <div className="filters">
+//         <button
+//           className={filter === "all" ? "active" : ""}
+//           onClick={() => setFilter("all")}
+//         >
+//           All
+//         </button>
+//         <button
+//           className={filter === "pass" ? "active" : ""}
+//           onClick={() => setFilter("pass")}
+//         >
+//           Pass
+//         </button>
+//         <button
+//           className={filter === "fail" ? "active" : ""}
+//           onClick={() => setFilter("fail")}
+//         >
+//           Fail
+//         </button>
+//       </div>
 
-      {filteredStudents.map((student) => (
-        <div key={student.id} className="card">
-          <div>
-            <h3>{student.name}</h3>
-            <p>Marks: {student.marks}</p>
-            <p className={student.marks >= 50 ? "pass" : "fail"}>
-              {student.marks >= 50 ? "Pass" : "Fail"}
-            </p>
-          </div>
+//       {filteredStudents.map((student) => (
+//         <div key={student.id} className="card">
+//           <div>
+//             <h3>{student.name}</h3>
+//             <p>Marks: {student.marks}</p>
+//             <p className={student.marks >= 50 ? "pass" : "fail"}>
+//               {student.marks >= 50 ? "Pass" : "Fail"}
+//             </p>
+//           </div>
 
-          <div className="actions">
-            <button className="edit" onClick={() => handleEdit(student)}>
-              Edit
-            </button>
-            <button className="delete" onClick={() => handleDelete(student.id)}>
-              Delete
-            </button>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
+//           <div className="actions">
+//             <button className="edit" onClick={() => handleEdit(student)}>
+//               Edit
+//             </button>
+//             <button className="delete" onClick={() => handleDelete(student.id)}>
+//               Delete
+//             </button>
+//           </div>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
 
-export default App;
+// export default App;

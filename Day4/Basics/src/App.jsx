@@ -602,141 +602,201 @@ import './App.css'
 // export default App;
 
 
+// function App() {
+//   const [students, setStudents] = useState(() => {
+//     const saved = localStorage.getItem("students");
+//     return saved ? JSON.parse(saved) : [];
+//   });
+
+//   const [name, setName] = useState("");
+//   const [marks, setMarks] = useState("");
+//   const [filter, setFilter] = useState("all");
+//   const [search, setSearch] = useState("");
+
+//   useEffect(() => {
+//     localStorage.setItem("students", JSON.stringify(students));
+//   }, [students]);
+
+//   const handleAdd = () => {
+//     if (!name || !marks) return;
+
+//     const newStudent = {
+//       id: Date.now(),
+//       name,
+//       marks: Number(marks),
+//     };
+
+//     setStudents([...students, newStudent]);
+//     setName("");
+//     setMarks("");
+//   };
+
+//   const handleDelete = (id) => {
+//     setStudents(students.filter((s) => s.id !== id));
+//   };
+
+//   const filteredStudents = students
+//     .filter((student) => {
+//       if (filter === "pass") return student.marks >= 50;
+//       if (filter === "fail") return student.marks < 50;
+//       return true;
+//     })
+//     .filter((student) =>
+//       student.name.toLowerCase().includes(search.toLowerCase())
+//     );
+
+//   const totalStudents = students.length;
+//   const totalPass = students.filter((s) => s.marks >= 50).length;
+//   const totalFail = students.filter((s) => s.marks < 50).length;
+//   const passPercentage =
+//     totalStudents === 0
+//       ? 0
+//       : ((totalPass / totalStudents) * 100).toFixed(1);
+
+//   return (
+//     <div className="container">
+//       <h1>Student Management System</h1>
+
+//       {/* Dashboard */}
+//       <div className="stats">
+//         <div className="stat-card">
+//           <h3>Total Students</h3>
+//           <p>{totalStudents}</p>
+//         </div>
+
+//         <div className="stat-card">
+//           <h3>Pass</h3>
+//           <p className="pass">{totalPass}</p>
+//         </div>
+
+//         <div className="stat-card">
+//           <h3>Fail</h3>
+//           <p className="fail">{totalFail}</p>
+//         </div>
+
+//         <div className="stat-card">
+//           <h3>Pass %</h3>
+//           <p>{passPercentage}%</p>
+//         </div>
+//       </div>
+
+//       {/* Form */}
+//       <div className="form">
+//         <input
+//           type="text"
+//           placeholder="Student Name"
+//           value={name}
+//           onChange={(e) => setName(e.target.value)}
+//         />
+
+//         <input
+//           type="number"
+//           placeholder="Marks"
+//           value={marks}
+//           onChange={(e) => setMarks(e.target.value)}
+//         />
+
+//         <button onClick={handleAdd}>Add Student</button>
+//       </div>
+
+//       {/* Search */}
+//       <input
+//         type="text"
+//         className="search"
+//         placeholder="Search by name..."
+//         value={search}
+//         onChange={(e) => setSearch(e.target.value)}
+//       />
+
+//       {/* Filter Buttons */}
+//       <div className="filters">
+//         <button onClick={() => setFilter("all")}>All</button>
+//         <button onClick={() => setFilter("pass")}>Pass</button>
+//         <button onClick={() => setFilter("fail")}>Fail</button>
+//       </div>
+
+//       {/* Student List */}
+//       <div className="student-list">
+//         {filteredStudents.map((student) => (
+//           <div key={student.id} className="student-card">
+//             <span>
+//               {student.name} — {student.marks} Marks
+//             </span>
+
+//             <span
+//               className={
+//                 student.marks >= 50 ? "status pass" : "status fail"
+//               }
+//             >
+//               {student.marks >= 50 ? "Pass" : "Fail"}
+//             </span>
+
+//             <button onClick={() => handleDelete(student.id)}>
+//               Delete
+//             </button>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default App
+
 function App() {
-  const [students, setStudents] = useState(() => {
-    const saved = localStorage.getItem("students");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [name, setName] = useState("");
-  const [marks, setMarks] = useState("");
-  const [filter, setFilter] = useState("all");
-  const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    localStorage.setItem("students", JSON.stringify(students));
-  }, [students]);
+  const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState("");
 
   const handleAdd = () => {
-    if (!name || !marks) return;
-
-    const newStudent = {
-      id: Date.now(),
-      name,
-      marks: Number(marks),
-    };
-
-    setStudents([...students, newStudent]);
-    setName("");
-    setMarks("");
+    if (!input.trim()) return;
+    setTodos([...todos, { id: Date.now(), text: input, completed: false }]);
+    setInput("");
   };
 
-  const handleDelete = (id) => {
-    setStudents(students.filter((s) => s.id !== id));
-  };
-
-  const filteredStudents = students
-    .filter((student) => {
-      if (filter === "pass") return student.marks >= 50;
-      if (filter === "fail") return student.marks < 50;
-      return true;
-    })
-    .filter((student) =>
-      student.name.toLowerCase().includes(search.toLowerCase())
+  
+  const handleToggle = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
     );
+  };
 
-  const totalStudents = students.length;
-  const totalPass = students.filter((s) => s.marks >= 50).length;
-  const totalFail = students.filter((s) => s.marks < 50).length;
-  const passPercentage =
-    totalStudents === 0
-      ? 0
-      : ((totalPass / totalStudents) * 100).toFixed(1);
+  
+  const handleDelete = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
 
   return (
     <div className="container">
-      <h1>Student Management System</h1>
+      <h1>Todo App</h1>
 
-      {/* Dashboard */}
-      <div className="stats">
-        <div className="stat-card">
-          <h3>Total Students</h3>
-          <p>{totalStudents}</p>
-        </div>
-
-        <div className="stat-card">
-          <h3>Pass</h3>
-          <p className="pass">{totalPass}</p>
-        </div>
-
-        <div className="stat-card">
-          <h3>Fail</h3>
-          <p className="fail">{totalFail}</p>
-        </div>
-
-        <div className="stat-card">
-          <h3>Pass %</h3>
-          <p>{passPercentage}%</p>
-        </div>
-      </div>
-
-      {/* Form */}
-      <div className="form">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleAdd();
+        }}
+      >
         <input
           type="text"
-          placeholder="Student Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="Enter a new task..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
         />
+        <button type="submit">Add</button>
+      </form>
 
-        <input
-          type="number"
-          placeholder="Marks"
-          value={marks}
-          onChange={(e) => setMarks(e.target.value)}
-        />
-
-        <button onClick={handleAdd}>Add Student</button>
-      </div>
-
-      {/* Search */}
-      <input
-        type="text"
-        className="search"
-        placeholder="Search by name..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
-      {/* Filter Buttons */}
-      <div className="filters">
-        <button onClick={() => setFilter("all")}>All</button>
-        <button onClick={() => setFilter("pass")}>Pass</button>
-        <button onClick={() => setFilter("fail")}>Fail</button>
-      </div>
-
-      {/* Student List */}
-      <div className="student-list">
-        {filteredStudents.map((student) => (
-          <div key={student.id} className="student-card">
-            <span>
-              {student.name} — {student.marks} Marks
-            </span>
-
-            <span
-              className={
-                student.marks >= 50 ? "status pass" : "status fail"
-              }
-            >
-              {student.marks >= 50 ? "Pass" : "Fail"}
-            </span>
-
-            <button onClick={() => handleDelete(student.id)}>
-              Delete
-            </button>
-          </div>
+      <ul className="todo-list">
+        {todos.map((todo) => (
+          <li
+            key={todo.id}
+            className={`todo-item ${todo.completed ? "completed" : ""}`}
+          >
+            <span onClick={() => handleToggle(todo.id)}>{todo.text}</span>
+            <button onClick={() => handleDelete(todo.id)}>Delete</button>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
